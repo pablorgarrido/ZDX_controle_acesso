@@ -1,99 +1,78 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
+<?php
+/**
+ * @var \App\Participante $participante
+ */
+?>
 
-        <title>Laravel</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
+@section('content')
+    <div class="content">
+        <div class="d-flex flex-column justify-content-center align-items-center" style="height: 70vh ">
+            @if(isset($participante))
+                <div class="row mt-4">
+                    <div class="col col-auto text-center">
+                        <p class="h1">Bem Vindo</p>
+                        <span class="h2 mb-3">{{$participante->nome}}</span>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col col-auto">
+                        @if(isset($participante->foto))
+                            <img src="{{$participante->avatar()}}" alt="" class="rounded-circle shadow">
                         @endif
-                    @endauth
+                    </div>
                 </div>
+            @else
+
             @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+            <div class="row">
+                <div class="col col-auto">
+                    <form id="formEnvio01" method="POST" action="{{route('postIndex')}}"
+                          class="float-right my-auto ml-auto" hidden_>
+                        @csrf
+                        <div class="form-group">
+                            <label>
+                                <input id="identificador" name="identificador" type="text" class="form-control" value="5dd747114026a" maxlength="13" required autofocus>
+                            </label>
+                            <button class="btn btn-primary" type="submit">
+                                Consultar
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
+            <span style="font-size: 4vmax;">Bem vindo</span>
+            {{--<span class="text-center" style="font-size: 3vmax;">Acesso</span>--}}
+            {{--<small class="text-muted" style="font-size: 1vmax;"><cite>Acesso</cite></small>--}}
+
         </div>
-    </body>
-</html>
+    </div>
+
+    {{--<form id="Form" action="./js/filehandling.js" method="post">--}}
+    {{--    <input id="here" maxlength="16" placeholder="scan..." type="text" tabindex="1" required autofocus>--}}
+    {{--    <input id="subHere" type="submit">--}}
+    {{--</form>--}}
+    {{--<script src="https://code.jquery.com/jquery-2.2.4.js"></script>--}}
+
+
+
+@endsection
+
+@push("custom-scripts")
+    <script>
+
+        HTMLInputElementObject.addEventListener('input', function (evt) {
+            something(this.value);
+        });
+
+        $('#identificador').(function () {
+            if (this.value.length === 13) {
+                $('#formEnvio01').submit();
+            }
+        });
+
+        setTimeout(function () {
+            window.location.reload(1);
+        }, (5 * 1000));
+    </script>
+@endpush

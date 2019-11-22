@@ -1,0 +1,2 @@
+Para liberar acesso aos arquivos
+php artisan storage:link
